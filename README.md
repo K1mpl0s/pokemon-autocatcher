@@ -10,6 +10,12 @@ Only if you modify the script.
 Also, don't brag about having a selfbot & you'll be fine.
 <br>
 (If a message contains something along the lines of i.e. "i have a selfbot" etc. you can be reported.)
+<br>
+Some spies are within the community who provide pictures or videos of people using such scripts so be cautious.
+<br>
+Such spies like "DJ" send Miles (pokecord dev) these pictures or videos. (Pokecord group staff also send DJ)
+<br>
+If miles is involved you'll just be blocked from the bot, otherwise discord will ban your email on the account reported.
 # Installation & how it works
 <ul>
   <li>Create a folder for this project on your system.</li>
