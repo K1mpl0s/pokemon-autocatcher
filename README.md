@@ -1,9 +1,11 @@
-# pokecord-autocatcher
-The fastest &amp; completely free to use pokecord autocatcher.
+# pokemon-autocatcher
+The fastest &amp; free to use pokecord & mewbot autocatcher.
 # What's different?
 Unlike my old one, this does not use google which makes it 10x faster.
 <br>
 I also now have a discord for this... you can join <a href="https://discord.gg/7t4FVJv">here</a> but be warned you may be seen as someone with a selfbot.
+<br>
+The bot now also has mewbot support.
 # Can i get banned?
 Only if you modify the script.
 <br>
