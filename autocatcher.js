@@ -9,6 +9,7 @@ var prefix;
 var groups;
 var legends = false;
 var groups = [];
+var mewbot = false;
 const legie = ['articuno', 'zapdos', 'moltres', 'mew', 'mewtwo', 'raikou', 'entei', 'suicune', 'lugia', 'ho-oh', 'celebi', 'regirock', 'regice', 'registeel', 'latias', 'latios', 'kyogre', 'groudon', 'rayquaza', 'jirachi', 'deoxys', 'uxie', 'mesprit', 'azelf', 'dialga', 'palkia', 'heatran', 'regigigas', 'giratina', 'cresselia', 'phione', 'manaphy', 'darkrai', 'shaymin', 'arceus', 'victini', 'cobalion', 'terrakion', 'virizion', 'tornadus', 'thundurus', 'reshiram', 'zekrom', 'landorus', 'kyurem', 'keldeo', 'meloetta', 'genesect', 'xerneas', 'yveltal', 'zygarde', 'diancie', 'hoopa', 'volcanion', 'type: null', 'silvally', 'tapu koko', 'tapu lele', 'tapu bulu', 'tapu fini', 'cosmog', 'cosmoem', 'solgaleo', 'lunala', 'nihilego', 'buzzwole', 'pheromosa', 'xurkitree', 'celesteela', 'kartana', 'guzzlord', 'necrozma', 'magearna', 'marshadow', 'poipole', 'naganadel', 'stakataka', 'blacephalon', 'zeraora', 'meltan', 'melmetal'];
 var hasCRC;
 var crc;
@@ -39,7 +40,7 @@ function loadConfig() {
     var spl = file.split('\n');
     spl.forEach(e => {
         if (e[0] == 't' && e.includes(':')) {
-            if(!e.includes('replaceThisTextWithToken')){
+            if (!e.includes('replaceThisTextWithToken')) {
                 token = e.split(':')[1].trim();
             } else {
                 console.log('No token provided in config.');
@@ -52,6 +53,11 @@ function loadConfig() {
             if (bol == 'false') legends = false;
         }
         if (e[0] == 'p' && e.includes(':')) prefix = e.split(':')[1].trim();
+        if (e[0] == 'm' && e.includes(':')) {
+            var bol = e.split(':')[1].trim();
+            if (bol == 'true') mewbot = true;
+            if (bol == 'false') mewbot = false;
+        }
     });
     var ids = file.slice(file.indexOf('groups:') + 6, file.indexOf('/*')).split('\n');
     ids.forEach(e => {
@@ -109,6 +115,11 @@ client.on('message', message => {
                 console.log('Legends: ' + legends);
                 message.delete();
             }
+            if (args[0].toLowerCase() == prefix + 'mewbot') {
+                mewbot ? mewbot = false : mewbot = true;
+                console.log('Mewbot: ' + mewbot);
+                message.delete();
+            }
         }
 
         if (message.channel.type != 'dm' && groups.includes(message.guild.id)) {
@@ -121,8 +132,8 @@ client.on('message', message => {
                         request.end(function (res) {
                             if (fs.existsSync('./pokemon.json')) {
                                 if (hasCRC) {
-                                    if(wCRC == 1)var idef = crc.crc32(Buffer.from(res.body)).toString('16');
-                                    if(wCRC == 2)var idef = crc.crc32(Buffer.from(res.body)).toString('hex');
+                                    if (wCRC == 1) var idef = crc.crc32(Buffer.from(res.body)).toString('16');
+                                    if (wCRC == 2) var idef = crc.crc32(Buffer.from(res.body)).toString('hex');
                                     var json = JSON.parse(fs.readFileSync('./pokemon.json', 'utf8'));
                                     console.log(json[idef] + ' spawned in ' + message.guild.name + ' > ' + message.channel.name);
                                     if (!legends) {
@@ -131,6 +142,31 @@ client.on('message', message => {
                                     if (legends) {
                                         if (legie.includes(json[idef])) {
                                             if (json[idef] != 'undefined' && json[idef] != undefined) message.channel.send(cmd + ' ' + json[idef]);
+                                        }
+                                    }
+                                    client.channels.get(message.channel.id).stopTyping();
+                                }
+                            }
+                        });
+                    }
+                }
+                if (embed.description.includes('This Pokémons name starts with') && mewbot) {
+                    client.channels.get(message.channel.id).startTyping();
+                    if (embed.image != undefined) {
+                        var request = unirest.get(embed.image.url);
+                        request.end(function (res) {
+                            if (fs.existsSync('./mewbot.json')) {
+                                if (hasCRC) {
+                                    if (wCRC == 1) var idef = crc.crc32(Buffer.from(res.body)).toString('16');
+                                    if (wCRC == 2) var idef = crc.crc32(Buffer.from(res.body)).toString('hex');
+                                    var json = JSON.parse(fs.readFileSync('./mewbot.json', 'utf8'));
+                                    console.log(json[idef] + ' spawned in ' + message.guild.name + ' > ' + message.channel.name + ' (mewbot)');
+                                    if (!legends) {
+                                        if (json[idef] != 'undefined' && json[idef] != undefined) message.channel.send(json[idef]);
+                                    }
+                                    if (legends) {
+                                        if (legie.includes(json[idef])) {
+                                            if (json[idef] != 'undefined' && json[idef] != undefined) message.channel.send(json[idef]);
                                         }
                                     }
                                     client.channels.get(message.channel.id).stopTyping();
