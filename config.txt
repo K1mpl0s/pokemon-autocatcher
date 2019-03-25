@@ -1,18 +1,23 @@
 token: replaceThisTextWithToken
 legends: false
 prefix: /
+mewbot: false
 groups:
 group id (replace this)
 group id (replace this)
 group id (replace this)
-/*
+/*---------------------------------------------------
 legends is a boolean...
 true = catch only legends
 false = catch everything
-
+------------------------------------
 prefix is for upcoming commands added to the selfbot.
-
+------------------------------------
+mewbot is a boolean...
+true = catch mewbot pokemon ontop of pokecord
+false = don't catch mewbot pokemon
+------------------------------------
 all group ids must be below "groups:" & must be a valid group id.
 you can copy group ids by enabling developer mode in discord.
 just right click on the group icon to copy ID.
-*/
+---------------------------------------------------*/
