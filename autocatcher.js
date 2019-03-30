@@ -120,11 +120,32 @@ client.on('message', message => {
                 console.log('Mewbot: ' + mewbot);
                 message.delete();
             }
+            if (args[0].toLowerCase() == prefix + 'spam') {
+                if (args[1] != null && args[2] != null && args[3] != null) {
+                    delete args[0];
+                    var time = args[1];
+                    delete args[1];
+                    var between = args[2];
+                    delete args[2];
+                    var msg = args.join(' ');
+                    var interval = setInterval(function () {
+                        --time;
+                        if (time != 1) {
+                            message.channel.send(msg);
+                        } else {
+                            clearInterval();
+                        }
+                    }, between);
+                } else {
+                    console.log("Invalid syntax. (" + prefix + "spam <milliseconds> <milisec between each msg> <message>)");
+                }
+                message.delete();
+            }
         }
 
         if (message.channel.type != 'dm' && groups.includes(message.guild.id)) {
             message.embeds.forEach((embed) => {
-                if (embed.description.includes('Guess the pokémon')) {
+                if (embed.title === 'A wild pokémon has appeared!') {
                     var cmd = embed.description.slice(embed.description.indexOf('type ') + 4, embed.description.indexOf(' <pokémon>'));
                     client.channels.get(message.channel.id).startTyping();
                     if (embed.image != undefined) {
@@ -150,7 +171,7 @@ client.on('message', message => {
                         });
                     }
                 }
-                if (embed.description.includes('This Pokémons name starts with') && mewbot) {
+                if (embed.title === 'A wild Pokémon has Spawned, Say its name to catch it!' && mewbot) {
                     client.channels.get(message.channel.id).startTyping();
                     if (embed.image != undefined) {
                         var request = unirest.get(embed.image.url);
