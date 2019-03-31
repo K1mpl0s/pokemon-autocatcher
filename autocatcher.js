@@ -86,7 +86,7 @@ client.on('ready', () => {
 /*
 Error handler
 */
-client.on('error', () => {
+client.on('error', (error) => {
     try {
         console.log('ERROR: ' + error);
     } catch (err) {
